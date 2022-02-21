@@ -47,9 +47,9 @@ class ApplicationServer {
 
 	start() {
 		let self = this;
-		console.log('started')
+		console.log('Started')
 		this.app.listen(this.app.get("port"), () => {
-			console.log(`Server Listening for port: ${self.app.get("port")}`);
+			console.log(`Server listening for port ${self.app.get("port")}...`);
 		});
 	}
 

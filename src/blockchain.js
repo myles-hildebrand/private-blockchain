@@ -34,8 +34,6 @@ class Blockchain {
      * Passing as a data `{data: 'Genesis Block'}`
      */
     async initializeChain() {
-        console.log('got to initChain')
-        console.log(`block height = ${this.height}`)
         if( this.height === -1){
             let block = new BlockClass.Block({data:'Genesis Block'});
             await this._addBlock(block);
