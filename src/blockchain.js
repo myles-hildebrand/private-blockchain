@@ -122,23 +122,30 @@ class Blockchain {
     submitStar(address, message, signature, star) {
         let self = this;
         return new Promise(async (resolve, reject) => {
-            messageTime = parseInt(message.split(':')[1])
+            let messageTime = parseInt(message.split(':')[1])
             let currentTime = parseInt(new Date().getTime().toString().slice(0,-3));
-            MAX_MIN = 5;
-            if (currentTime - messageTime > MAX_MIN*60) {
-                reject(Error('too much time elapsed'))
+            const MAX_MIN = 5;
+            const time_diff = currentTime - messageTime
+            if (time_diff > MAX_MIN*60) {
+                console.log(`ERROR: time_diff = ${time_diff} > ${MAX_MIN*60}`)
+                reject(Error('too much time elapsed'));
+                return;
             }
             const bitcoinVerify = bitcoinMessage.verify(message,address,signature)
             if (!bitcoinVerify){
-                reject(Error('bitcoin verification failed'))
+                console.log('ERROR: blockchain failed verification, proceeding...')
+                reject(Error('bitcoin verification failed'));
+                return;
             }
             let block = new BlockClass.Block({"owner":address,"star":star})
             if (block){
                 self._addBlock(block)
-                resolve(block)
+                resolve(block);
+                return;
             }
             else{
                 reject(Error('block invalid'))
+                return;
             }
 
         });
@@ -180,11 +187,11 @@ class Blockchain {
      * Remember the star should be returned decoded.
      * @param {*} address 
      */
-    getStarsByWalletAddress (address) {
+    getStarsByWalletAddress(address) {
         let self = this;
         let stars = [];
         return new Promise((resolve, reject) => {
-            const stars = self.chain.filter(p => p.address === address)
+            const stars = self.chain.filter(p => p.owner === address)
             if(stars){
                 resolve(stars)
             }
