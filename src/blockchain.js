@@ -73,10 +73,10 @@ class Blockchain {
             block.time = new Date().getTime().toString().slice(0,-3)
             block.height = self.chain.length
             block.hash = SHA256(JSON.stringify(block)).toString();
-            console.debug('validation of chain starts here')
-            let errors = await self.validateChain();
-            console.log(errors)
-            console.debug('validation of chain ended')
+            // console.debug('validation of chain starts here')
+            // let errors = await self.validateChain();
+            // console.log(errors)
+            // console.debug('validation of chain ended')
             if(block){
                 self.chain.push(block);
                 self.height++;
