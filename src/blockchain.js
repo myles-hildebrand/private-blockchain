@@ -64,17 +64,16 @@ class Blockchain {
     _addBlock(block) {
         let self = this;
         return new Promise(async (resolve, reject) => {   
-            if (self.chain.length > 0) {
+            if(self.chain.length > 0) {
                 block.previousBlockHash = self.chain[self.chain.length-1].hash;
             }
-            
             block.time = new Date().getTime().toString().slice(0,-3)
             block.height = self.chain.length
             block.hash = SHA256(JSON.stringify(block)).toString();
-            // console.debug('validation of chain starts here')
             let errors = await self.validateChain();
-            // console.log(errors)
-            // console.debug('validation of chain ended')
+            if(errors.length > 0) {
+                console.log('Errors:',errors)
+            }
             if(block){
                 self.chain.push(block);
                 self.height++;
@@ -125,8 +124,8 @@ class Blockchain {
             let messageTime = parseInt(message.split(':')[1])
             let currentTime = parseInt(new Date().getTime().toString().slice(0,-3));
             const MAX_MIN = 1e4; //hijack 5;
-            const time_diff = currentTime - messageTime
-            if (time_diff > MAX_MIN*60) {
+            const time_diff = Math.floor((currentTime - messageTime) / 60)
+            if (time_diff > MAX_MIN) {
                 console.log(`ERROR: time_diff = ${time_diff} > ${MAX_MIN*60}`)
                 reject(Error('too much time elapsed'));
                 return;
@@ -161,6 +160,7 @@ class Blockchain {
         let self = this;
         return new Promise((resolve, reject) => {
            let block = self.chain.filter(p => p.hash === hash)[0]
+           resolve(block);
         });
     }
 
@@ -213,23 +213,24 @@ class Blockchain {
         return new Promise(async (resolve, reject) => {
             self.chain.forEach((block, index) => {
                 //validate each block
-                let err = block.validate()
-                if (err != block){
+                if (!block.validate()){
+                    const err = `block ${index} not valid`
                     errorLog.push(err)
                 }
+                //ensure previousBlockHash matches previous Block Hash
                 if (block.height > 0) {
-                    //validate previousBlockHash
                     const previousBlock = self.chain[index - 1];
-                    if (block.previousBlochHash != previousBlock.hash){
+                    if (block.previousBlockHash !== previousBlock.hash){
                         const err = `previousBlockHash on block ${index} does not match previous`
                         errorLog.push(err);
                     }
-                    
-                    if (length(err) > 0){
-                        reject(Error('errors found'))
-                        return
-                    }
                 }
+                //reject if any errors found                 
+                if (errorLog.length > 0){
+                    reject(Error(errorLog))
+                    return
+                }
+            
             });
             resolve(errorLog);
             return
