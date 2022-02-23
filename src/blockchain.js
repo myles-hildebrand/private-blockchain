@@ -72,8 +72,7 @@ class Blockchain {
             block.height = self.chain.length
             block.hash = SHA256(JSON.stringify(block)).toString();
             // console.debug('validation of chain starts here')
-            // let errors = await self.validateChain();
-            let errors = self.validateChain();
+            let errors = await self.validateChain();
             // console.log(errors)
             // console.debug('validation of chain ended')
             if(block){
@@ -213,11 +212,13 @@ class Blockchain {
         let errorLog = [];
         return new Promise(async (resolve, reject) => {
             self.chain.forEach((block, index) => {
+                //validate each block
+                let err = block.validate()
+                if (err != block){
+                    errorLog.push(err)
+                }
                 if (block.height > 0) {
-                    let err = await BlockClass.Block.validate()
-                    if (err != block){
-                        errorLog.push(err)
-                    }
+                    //validate previousBlockHash
                     const previousBlock = self.chain[index - 1];
                     if (block.previousBlochHash != previousBlock.hash){
                         const err = `previousBlockHash on block ${index} does not match previous`
@@ -229,9 +230,9 @@ class Blockchain {
                         return
                     }
                 }
+            });
             resolve(errorLog);
             return
-            });
         });
     };
 

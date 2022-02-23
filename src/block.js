@@ -40,12 +40,20 @@ class Block {
     validate() {
         let self = this;
         return new Promise((resolve, reject) => {
+            //use spread operator to copy block
+            const checkBlock = {
+                ...self,
+                hash:null,
+            }
+            let checkHash = SHA256(JSON.stringify(checkBlock).toString())
+            console.log(checkHash)
             // Save in auxiliary variable the current block hash
-            let currentBlockHash = {...self[hash]};
+            // let currentBlockHash = {...self.hash};
             // Recalculate the hash of the Block
-            self.hash = SHA256(JSON.stringify(self).toString())
+            // self.hash = SHA256(JSON.stringify(self).toString())
             // Comparing if the hashes changed
-            if (currentBlockHash === self.hash){
+            // if (currentBlockHash === self.hash){
+            if (checkHash == self.hash){
                 // Returning the Block is valid
                 resolve(self)
                 return;
