@@ -10,4 +10,6 @@
 4. Submit your Star
      ![Request: http://localhost:8000/submitstar](https://github.com/myles-hildebrand/private-blockchain/blob/71bdb8ee3b209b65f2abd986f1151e2389c37ceb/postman_screenshots/postman_submit_star.png)
 5. Retrieve Stars owned by me
-    ![Request: http://localhost:8000/blocks/<WALLET_ADDRESS>](https://github.com/myles-hildebrand/private-blockchain/blob/71bdb8ee3b209b65f2abd986f1151e2389c37ceb/postman_screenshots/postman_retrieve_stars.png)
+    ![Request: http://localhost:8000/blocks/<WALLET_ADDRESS>](https://github.com/myles-hildebrand/private-blockchain/blob/9fec72bff3a9cafab46fe9ee16bd97c116d17171/postman_screenshots/postman_retrieve_stars.png)
+6. Validate blockchain with endpoint
+    ![Request: http://localhost:8000/validateBlockchain](https://github.com/myles-hildebrand/private-blockchain/blob/9fec72bff3a9cafab46fe9ee16bd97c116d17171/postman_screenshots/postman_validate_blockchain.png)
