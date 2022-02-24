@@ -123,7 +123,7 @@ class Blockchain {
         return new Promise(async (resolve, reject) => {
             let messageTime = parseInt(message.split(':')[1])
             let currentTime = parseInt(new Date().getTime().toString().slice(0,-3));
-            const MAX_MIN = 1e4; //hijack 5;
+            const MAX_MIN = 5;
             const time_diff = Math.floor((currentTime - messageTime) / 60)
             if (time_diff > MAX_MIN) {
                 console.log(`ERROR: time_diff = ${time_diff} > ${MAX_MIN*60}`)
