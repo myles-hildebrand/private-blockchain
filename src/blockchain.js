@@ -191,7 +191,12 @@ class Blockchain {
         let self = this;
         let stars = [];
         return new Promise((resolve, reject) => {
-            const stars = self.chain.filter(p => p.owner === address)
+            // const stars = self.chain.filter(p => p.owner === address)
+            self.chain.forEach((block) => {
+                if (block.owner === address){
+                    stars.push((({owner,star}) => ({owner,star}))(block))
+                }
+            });
             if(stars){
                 resolve(stars)
             }
