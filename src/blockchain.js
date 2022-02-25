@@ -126,7 +126,7 @@ class Blockchain {
             const MAX_MIN = 5;
             const time_diff = Math.floor((currentTime - messageTime) / 60)
             if (time_diff > MAX_MIN) {
-                console.log(`ERROR: time_diff = ${time_diff} > ${MAX_MIN*60}`)
+                console.log(`ERROR: minutes diff = ${time_diff} > ${MAX_MIN}`)
                 reject(Error('too much time elapsed'));
                 return;
             }

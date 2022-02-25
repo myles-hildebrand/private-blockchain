@@ -40,22 +40,34 @@ class Block {
     validate() {
         let self = this;
         return new Promise((resolve, reject) => {
-            //use spread operator to copy block w/o hash
-            let checkBlock = {
-                ...self,
-                hash:null,
-            }
-            let checkHash = SHA256(JSON.stringify(checkBlock)).toString()
-            if (checkHash === self.hash){
-                // Returning the Block is valid
+            //use rest spread operator to avoid making a new block
+            if (self.hash === SHA256(JSON.stringify({
+                    ...self,
+                    "hash":null
+                }))){
                 resolve(true)
-                return;
+                return
             }
             else{
-                // Returning the Block is not valid
-               resolve(false)
-               return;
+                resolve(false)
+                return
             }
+            //use spread operator to copy block w/o hash
+            // let checkBlock = {
+            //     ...self,
+            //     hash:null,
+            // }
+            // let checkHash = SHA256(JSON.stringify(checkBlock)).toString()
+            // if (checkHash === self.hash){
+            //     // Returning the Block is valid
+            //     resolve(true)
+            //     return;
+            // }
+            // else{
+            //     // Returning the Block is not valid
+            //    resolve(false)
+            //    return;
+            // }
         });
     }
 
